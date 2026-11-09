@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KopiKita</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1F3D36;--on:#fff;--c:#B9741B;--bg:#F1F3EF;--s:#fff;--t:#1B2420;--m:#5F6B65;--l:#D9DFD9;--r:#B3382C;--ok:#2A7B4C;font:15px/1.5 "Instrument Sans",system-ui,sans-serif;color:var(--t)}
+@media(prefers-color-scheme:dark){:root{--g:#86CBB5;--on:#0E1A16;--c:#E3A956;--bg:#111715;--s:#1A2320;--t:#EDF1EE;--m:#9AA8A1;--l:#2B3833;--r:#FF8F80;--ok:#6FD39A}}
+*{box-sizing:border-box;margin:0}[hidden]{display:none!important}body{background:var(--bg)}
+h1,h2,h3,.brand{font-family:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;letter-spacing:-.02em;line-height:1.15}
+h1{font-size:26px}h2{font-size:20px}h3{font-size:16px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.phone{max-width:430px;min-height:100vh;margin:auto;background:var(--bg);position:relative;padding-bottom:76px}
+@media(min-width:600px){.phone{margin:20px auto;min-height:860px;border:1px solid var(--l);border-radius:28px;overflow:hidden}}
+.top{display:flex;align-items:center;gap:10px;padding:16px 18px;position:sticky;top:0;background:var(--bg);z-index:5}
+.top h2{flex:1}.brand{font-weight:800;font-size:22px;color:var(--g)}
+.pad{padding:0 18px 18px}.stack>*+*{margin-top:12px}
+.card{background:var(--s);border:1px solid var(--l);border-radius:14px;padding:14px}
+.btn{border:0;border-radius:12px;padding:12px 16px;background:var(--g);color:var(--on);font-weight:600;cursor:pointer;width:100%}
+.btn.sm{width:auto;padding:8px 14px;font-size:14px}.btn.ghost{background:none;border:1px solid var(--l);color:var(--t)}
+.btn.bad{background:none;border:1px solid var(--r);color:var(--r)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.icon{border:1px solid var(--l);background:var(--s);border-radius:10px;width:38px;height:38px;cursor:pointer}
+.field{display:block}.field>span{display:block;font-size:13px;color:var(--m);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--l);border-radius:10px;background:var(--s)}
+.field input:invalid:not(:placeholder-shown){border-color:var(--r)}
+.err{color:var(--r);font-size:13px;margin-top:6px;min-height:18px}.ok{color:var(--ok)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 18px 12px}
+.chip{border:1px solid var(--l);background:var(--s);border-radius:99px;padding:6px 14px;white-space:nowrap;cursor:pointer}
+.chip.on{background:var(--g);color:var(--on);border-color:var(--g)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px}
+.prod{background:var(--s);border:1px solid var(--l);border-radius:14px;overflow:hidden;cursor:pointer;text-align:left;padding:0}
+.thumb{aspect-ratio:1;display:grid;place-items:center;font-size:40px;background:linear-gradient(145deg,hsl(var(--h) 45% 32%),hsl(var(--h) 50% 18%));position:relative}
+.thumb.lg{aspect-ratio:4/3;font-size:64px;border-radius:0}.thumb.sm{width:56px;aspect-ratio:1;font-size:24px;border-radius:10px;flex:none}
+.prod .in{padding:10px 12px}.prod small,.m{color:var(--m);font-size:13px}.price{font-weight:700;color:var(--g)}
+.tag{position:absolute;left:8px;top:8px;background:var(--s);color:var(--r);border-radius:6px;font-size:12px;padding:2px 8px;font-weight:600}
+.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}.grow{flex:1}
+.qty{display:flex;align-items:center;gap:10px}.qty button{width:30px;height:30px;border-radius:8px;border:1px solid var(--l);background:var(--s);cursor:pointer}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:auto;display:flex;background:var(--s);border-top:1px solid var(--l);z-index:6}
+@media(min-width:600px){.nav{position:absolute}}
+.nav button{flex:1;border:0;background:none;padding:10px 0 12px;color:var(--m);cursor:pointer;font-size:12px}
+.nav button b{display:block;font-size:20px;font-weight:400}.nav button.on{color:var(--g);font-weight:700}
+.badge{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--c)}
+.badge.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}.badge.bad{background:color-mix(in srgb,var(--r) 15%,transparent);color:var(--r)}
+.steps{list-style:none;padding:0;border-left:2px solid var(--l);margin-left:8px}
+.steps li{padding:0 0 16px 18px;position:relative;color:var(--m)}
+.steps li:before{content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--l)}
+.steps li.done{color:var(--t)}.steps li.done:before{background:var(--ok)}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--t);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:9;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw}
+.toast.on{opacity:1}
+.empty{text-align:center;padding:48px 24px;color:var(--m)}.empty b{display:block;font-size:40px}
+.seg{display:flex;background:var(--l);border-radius:12px;padding:3px}.seg button{flex:1;border:0;background:none;padding:8px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--m)}.seg button.on{background:var(--s);color:var(--t)}
+.opt{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--l);border-radius:10px;background:var(--s);cursor:pointer}
+.opt:has(input:checked){border-color:var(--g);box-shadow:inset 0 0 0 1px var(--g)}
+.hero{background:var(--g);color:var(--on);padding:22px 18px 26px;border-radius:0 0 24px 24px;margin-bottom:14px}
+.hero input{width:100%;margin-top:12px;padding:12px;border-radius:12px;border:0;background:var(--s);color:var(--t)}
+/* penjual */
+.wrap{max-width:1000px;margin:auto;padding:0 18px 40px}
+.bar{display:flex;align-items:center;gap:20px;padding:16px 0;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;flex:1}.tabs button{border:0;background:none;padding:8px 14px;border-radius:10px;cursor:pointer;color:var(--m);font-weight:600}.tabs button.on{background:var(--s);color:var(--t);border:1px solid var(--l)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}.stats b{display:block;font:700 24px "Bricolage Grotesque",system-ui}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+@media(max-width:800px){.split{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:13px;color:var(--m);font-weight:600}td,th{padding:10px 8px;border-bottom:1px solid var(--l)}
+.sel{cursor:pointer}.sel:hover,.sel.on{background:color-mix(in srgb,var(--g) 8%,transparent)}
+.tbl{overflow-x:auto}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+</style></head><body>
+<div class="phone" id="vAuth">
+<section class="pad stack" id="auth" style="padding-top:56px">
+ <div class="brand" style="font-size:34px">KopiKita</div>
+ <p class="m" id="asub">Masuk untuk mulai belanja kopi.</p>
+ <div class="seg"><button id="tl" class="on" onclick="tab('l')">Login</button><button id="td" onclick="tab('d')">Registrasi</button></div>
+ <label class="field" id="npw" hidden><span>Nama lengkap</span><input id="nm" autocomplete="name" placeholder="Nama sesuai identitas"></label>
+ <label class="field"><span>Email</span><input id="em" type="email" autocomplete="email" placeholder="nama@email.com"></label>
+ <label class="field"><span>Password</span><input id="pw" type="password" placeholder="Masukkan password"></label>
+ <label class="field" id="hpw" hidden><span>Nomor HP</span><input id="hp" type="tel" inputmode="numeric" placeholder="081234567890"></label>
+ <label class="field" id="rpw" hidden><span>Role</span><select id="rl"><option value="pembeli">Pembeli</option><option value="penjual">Penjual</option></select></label>
+ <div class="err" id="aerr"></div>
+ <button class="btn" id="abtn" onclick="auth()">Masuk</button>
+ <p class="m" id="aalt" style="text-align:center"></p>
+ <details class="m"><summary>Akun contoh untuk uji coba</summary>Pembeli: jihan123@gmail.com / Jihan123<br>Penjual: toko@kopikita.id / Toko123<br>Sudah terdaftar: nadin@gmail.com<br>Belum terdaftar: yosa1@gmail.com</details>
+</section>
+</div>
+<div class="phone" id="vBuyer" hidden>
+<section class="screen" id="katalog" hidden>
+ <div class="hero"><div class="row sp"><div class="brand" style="color:var(--on)">KopiKita</div><button class="chip" onclick="logout()">Keluar</button></div><div>Mau seduh apa hari ini?</div><input id="q" placeholder="Cari kopi, mis. Gayo" oninput="cat()"></div>
+ <div class="chips" id="chips"></div><div class="grid" id="grid"></div>
+</section>
+
+<section class="screen" id="detail" hidden>
+ <div class="top"><button class="icon" onclick="go('katalog')" aria-label="Kembali">←</button><h2>Detail produk</h2></div>
+ <div id="dv"></div>
+</section>
+
+<section class="screen" id="keranjang" hidden>
+ <div class="top"><h2>Keranjang</h2></div><div class="pad stack" id="cv"></div>
+</section>
+
+<section class="screen" id="checkout" hidden>
+ <div class="top"><button class="icon" onclick="go('keranjang')" aria-label="Kembali">←</button><h2>Checkout</h2></div>
+ <div class="pad stack">
+  <div class="card" id="sum"></div>
+  <label class="field"><span>Nama pembeli</span><input id="pnm" autocomplete="name" placeholder="Nama penerima"></label>
+  <label class="field"><span>Nomor HP</span><input id="php" type="tel" inputmode="numeric" placeholder="081234567890"></label>
+  <label class="field"><span>Alamat pengiriman</span><textarea id="adr" rows="3" placeholder="Jalan, nomor, kota, kode pos"></textarea></label>
+  <h3>Ekspedisi</h3><div class="stack" id="eks"></div>
+  <h3>Metode pembayaran</h3><div class="stack" id="mtd"></div>
+  <label class="row m"><input type="checkbox" id="gagal"> Simulasikan pembayaran gagal</label>
+  <div class="card"><div class="row sp"><span>Total bayar</span><b class="price" id="tot"></b></div></div>
+  <div class="err" id="cerr"></div>
+  <button class="btn" onclick="pay()">Bayar</button>
+ </div>
+</section>
+
+<section class="screen" id="sukses" hidden>
+ <div class="empty" style="padding-top:110px"><b>✅</b><h1 style="color:var(--t)">Pembayaran berhasil</h1><p>Pesanan <span id="nop"></span> sedang diteruskan ke penjual.</p><br>
+ <button class="btn" onclick="go('pesanan')">Lacak pesanan</button><br><br><button class="btn ghost" onclick="go('katalog')">Belanja lagi</button></div>
+</section>
+
+<section class="screen" id="pesanan" hidden>
+ <div class="top"><h2>Pesanan saya</h2></div><div class="pad stack" id="ov"></div>
+</section>
+
+<section class="screen" id="pdet" hidden>
+ <div class="top"><button class="icon" onclick="go('pesanan')" aria-label="Kembali">←</button><h2>Detail pesanan</h2></div><div class="pad stack" id="pv"></div>
+</section>
+
+<nav class="nav" id="nav" hidden>
+ <button data-s="katalog" onclick="go('katalog')"><b>☕</b>Katalog</button>
+ <button data-s="keranjang" onclick="go('keranjang')"><b>🛒</b>Keranjang <span id="cn"></span></button>
+ <button data-s="pesanan" onclick="go('pesanan')"><b>📦</b>Pesanan</button>
+</nav>
+</div>
+<div class="wrap" id="vSeller" hidden>
+ <div class="bar"><div class="brand">KopiKita <span class="badge">Penjual</span></div>
+  <div class="tabs"><button id="t1" class="on" onclick="S.tab(1)">Kelola produk</button><button id="t2" onclick="S.tab(2)">Pesanan masuk <span id="nb"></span></button></div>
+  <span class="m" id="sn">Toko Kopi Nusantara</span><button class="btn ghost sm" onclick="logout()">Keluar</button></div>
+
+ <div class="stats" id="stats"></div>
+
+ <div id="v1" class="split">
+  <div class="card tbl"><div class="row sp" style="margin-bottom:8px"><h2>Produk</h2><button class="btn sm" onclick="S.edit(0)">Tambah produk</button></div>
+   <table><thead><tr><th>Produk</th><th>Jenis</th><th>Harga</th><th>Stok</th><th></th></tr></thead><tbody id="pl"></tbody></table>
+   <div class="empty" id="pe" hidden><b>☕</b>Produk belum tersedia</div></div>
+  <div class="card stack" id="form"></div>
+ </div>
+
+ <div id="v2" class="split" hidden>
+  <div class="card tbl"><h2 style="margin-bottom:8px">Pesanan masuk</h2>
+   <table><thead><tr><th>No. pesanan</th><th>Pembeli</th><th>Total</th><th>Status</th></tr></thead><tbody id="ol"></tbody></table>
+   <div class="empty" id="oe" hidden><b>📭</b>Belum ada pesanan masuk</div></div>
+  <div class="card stack" id="od"><p class="m">Pilih pesanan untuk melihat detail.</p></div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+
+const $=s=>document.querySelector(s),rp=n=>'Rp'+n.toLocaleString('id-ID');
+const P=[],O=[];let ME=null;
+const EK=[['JNE',15000],['J&T',18000],['SiCepat',12000]],MT=['Transfer bank','E-wallet','COD'];
+let cart={},cur=null,filt='Semua',mode='l',eks=15000,user=null;
+const ST=['Dibayar','Dikemas','Dikirim','Selesai'];
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)}
+function go(id){document.querySelectorAll('.screen').forEach(e=>e.hidden=e.id!==id);
+ const n=['katalog','keranjang','pesanan','detail'].includes(id);$('#nav').hidden=!n;
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.s==id));
+ ({katalog:cat,keranjang:cartV,checkout:chk,pesanan:ordV})[id]?.();scrollTo(0,0)}
+const API='api.php';
+async function api(a,d){try{const r=await fetch(API+'?a='+a,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d||{})});return await r.json()}catch(e){return{error:'Tidak dapat terhubung ke server. Pastikan Apache dan MySQL aktif.'}}}
+function applyData(r){ME=r.me;user=ME.e;P.length=0;P.push(...r.products.map(x=>({id:+x.id,n:x.n,t:x.t,d:x.d,p:+x.p,s:+x.s,h:(x.id*57)%360})));
+ O.length=0;O.push(...r.orders.map(o=>({...o,id:+o.id,tot:+o.tot})));cart=Array.isArray(r.cart)?{}:r.cart;badge()}
+async function loadAll(){const r=await api('load');if(r.error)return toast(r.error);applyData(r)}
+function saveCart(){api('cart_set',{items:cart})}
+function enter(){$('#vAuth').hidden=true;if(ME.r=='penjual'){$('#vSeller').hidden=false;S.refresh()}else{$('#vBuyer').hidden=false;go('katalog')}}
+function tab(m){mode=m;const l=m=='l';$('#tl').classList.toggle('on',l);$('#td').classList.toggle('on',!l);
+ $('#hpw').hidden=l;$('#npw').hidden=l;$('#rpw').hidden=l;$('#abtn').textContent=l?'Masuk':'Daftar';
+ $('#asub').textContent=l?'Masuk untuk mulai belanja kopi.':'Buat akun agar bisa berbelanja di KopiKita.';
+ $('#aalt').innerHTML=l?'Belum punya akun? <a href="#" style="color:var(--g)" onclick="tab(\'d\');return false">Registrasi</a>':'Sudah punya akun? <a href="#" style="color:var(--g)" onclick="tab(\'l\');return false">Login</a>';
+ $('#aerr').className='err';$('#aerr').textContent=''}
+async function auth(){const e=$('#em').value.trim().toLowerCase(),p=$('#pw').value,h=$('#hp').value.trim(),n=$('#nm').value.trim(),er=$('#aerr');er.className='err';er.textContent='';
+ if(!e||!p||(mode=='d'&&(!h||!n)))return er.textContent='Lengkapi semua data.';
+ if(!/^\S+@\S+\.\S+$/.test(e))return er.textContent='Format email tidak valid';
+ if(mode=='d'){
+  const r=await api('register',{nama:n,email:e,password:p,hp:h,role:$('#rl').value});
+  if(r.error)return er.textContent=r.error;
+  tab('l');$('#nm').value='';$('#em').value=e;$('#pw').value='';$('#hp').value='';
+  $('#aerr').className='err ok';return $('#aerr').textContent='Registrasi berhasil. Silakan login dengan akun Anda.'}
+ const r=await api('login',{email:e,password:p});if(r.error)return er.textContent=r.error;
+ const l=await api('load');if(l.error)return er.textContent=l.error;
+ applyData(l);$('#pw').value='';enter()}
+function logout(){api('logout');['#pnm','#php','#adr','#nm','#hp'].forEach(s=>$(s).value='');$('#vBuyer').hidden=true;$('#vSeller').hidden=true;$('#vAuth').hidden=false;user=null;cart={};badge();$('#em').value='';$('#pw').value='';tab('l');scrollTo(0,0)}
+function cat(){const q=$('#q').value.toLowerCase();
+ $('#chips').innerHTML=['Semua','Arabika','Robusta'].map(c=>`<button class="chip ${c==filt?'on':''}" onclick="filt='${c}';cat()">${c}</button>`).join('');
+ const l=P.filter(x=>(filt=='Semua'||x.t==filt)&&(x.n+x.t).toLowerCase().includes(q));
+ $('#grid').innerHTML=l.length?l.map(x=>`<button class="prod" onclick="det(${x.id})"><div class="thumb" style="--h:${x.h}">☕${x.s?'':'<span class="tag">Stok habis</span>'}</div><div class="in"><b>${x.n}</b><br><small>${x.t}</small><div class="price">${rp(x.p)}</div></div></button>`).join(''):'<div class="empty" style="grid-column:1/3"><b>🔍</b>Produk tidak ditemukan</div>'}
+function det(id){cur=P.find(x=>x.id==id);const x=cur;
+ $('#dv').innerHTML=`<div class="thumb lg" style="--h:${x.h}">☕</div><div class="pad stack" style="padding-top:16px"><h1>${x.n}</h1><div class="row sp"><span class="price" style="font-size:20px">${rp(x.p)}</span>${x.s?`<span class="badge ok">Stok ${x.s}</span>`:'<span class="badge bad">Stok habis</span>'}</div><p class="m">${x.t}</p><p>${x.d}</p>${x.s?`<div class="card row sp"><div><b>Jumlah dibeli</b><div class="m">Tersedia ${x.s}${cart[x.id]?' · ada '+cart[x.id]+' di keranjang':''}</div></div><div class="qty"><button onclick="dqty(-1)" aria-label="Kurangi">−</button><b id="dqn" style="min-width:20px;text-align:center">1</b><button onclick="dqty(1)" aria-label="Tambah">+</button></div></div><div class="row sp"><span class="m">Subtotal</span><b class="price" id="dsub">${rp(x.p)}</b></div><button class="btn" onclick="add(${x.id})">Tambah ke keranjang</button>`:'<button class="btn" disabled>Stok habis</button>'}</div>`;dq=1;go('detail')}
+let dq=1;
+function dqty(d){const x=cur,n=dq+d;if(n<1)return;if(n+(cart[x.id]||0)>x.s)return toast('Stok tidak mencukupi');dq=n;$('#dqn').textContent=n;$('#dsub').textContent=rp(x.p*n)}
+function add(id){const x=P.find(p=>p.id==id),n=(cart[id]||0)+dq;if(n>x.s)return toast('Stok tidak mencukupi');cart[id]=n;badge();saveCart();toast(dq+' '+x.n+' ditambahkan ke keranjang');det(id)}
+function badge(){const n=Object.values(cart).reduce((a,b)=>a+b,0);$('#cn').textContent=n?'('+n+')':''}
+function qty(id,d){const x=P.find(p=>p.id==id),n=cart[id]+d;if(n>x.s)return toast('Stok tidak mencukupi');if(n<1)delete cart[id];else cart[id]=n;badge();saveCart();cartV()}
+const sub=()=>Object.entries(cart).reduce((a,[i,q])=>a+P.find(p=>p.id==i).p*q,0);
+function cartV(){const k=Object.keys(cart);
+ $('#cv').innerHTML=k.length?k.map(i=>{const x=P.find(p=>p.id==i);return `<div class="card row"><div class="thumb sm" style="--h:${x.h}">☕</div><div class="grow"><b>${x.n}</b><div class="m">${rp(x.p)}</div><div class="qty" style="margin-top:6px"><button onclick="qty(${i},-1)" aria-label="Kurangi">−</button>${cart[i]}<button onclick="qty(${i},1)" aria-label="Tambah">+</button></div></div><b>${rp(x.p*cart[i])}</b></div>`}).join('')+`<div class="card row sp"><span>Total belanja</span><b class="price">${rp(sub())}</b></div><button class="btn" onclick="go('checkout')">Checkout</button>`:'<div class="empty"><b>🛒</b>Keranjang masih kosong<br><br><button class="btn sm" onclick="go(\'katalog\')">Lihat katalog</button></div>'}
+function chk(){if(!Object.keys(cart).length)return go('keranjang');
+ $('#sum').innerHTML=Object.entries(cart).map(([i,q])=>`<div class="row sp"><span>${P.find(p=>p.id==i).n} ×${q}</span><span>${rp(P.find(p=>p.id==i).p*q)}</span></div>`).join('');
+ $('#eks').innerHTML=EK.map((e,i)=>`<label class="opt"><input type="radio" name="e" ${i==0?'checked':''} onchange="eks=${e[1]};tt()"><span class="grow">${e[0]}</span>${rp(e[1])}</label>`).join('');
+ $('#mtd').innerHTML=MT.map((m,i)=>`<label class="opt"><input type="radio" name="m" ${i==0?'checked':''}>${m}</label>`).join('');eks=15000;tt();const b=ME.pembeli||{};if(!$('#pnm').value)$('#pnm').value=b.n||ME.n;if(!$('#php').value)$('#php').value=b.h||ME.h;if(!$('#adr').value)$('#adr').value=b.a||'';$('#cerr').textContent=''}
+function tt(){$('#tot').textContent=rp(sub()+eks)}
+async function pay(){const e=$('#cerr');e.textContent='';
+ const n=$('#pnm').value.trim(),h=$('#php').value.trim();
+ if(!n)return e.textContent='Nama pembeli wajib diisi';
+ if(!h)return e.textContent='Nomor HP wajib diisi';
+ if(!/^(08|\+?62)\d{8,12}$/.test(h))return e.textContent='Nomor HP tidak valid';
+ if(!$('#adr').value.trim())return e.textContent='Alamat pengiriman wajib diisi';
+ if($('#gagal').checked)return e.textContent='Pembayaran gagal, silakan coba lagi';
+ const r=await api('checkout',{nama:n,hp:h,alamat:$('#adr').value.trim(),items:cart,
+  ekspedisi:document.querySelector('[name=e]:checked').nextElementSibling.textContent,
+  metode:document.querySelector('[name=m]:checked').parentNode.textContent.trim()});
+ if(r.error)return e.textContent=r.error;
+ ['#pnm','#php','#adr'].forEach(s=>$(s).value='');await loadAll();$('#nop').textContent=r.no;go('sukses')}
+function ordV(){const l=O.filter(o=>o.u==user);$('#ov').innerHTML=l.length?l.map(o=>`<button class="card prod stack" style="width:100%;padding:14px" onclick="od(${O.indexOf(o)})"><div class="row sp"><b>${o.no}</b><span class="badge ${o.st=='Selesai'?'ok':''}">${o.st}</span></div><div class="m">${o.tgl} · ${o.it}</div><b class="price">${rp(o.tot)}</b></button>`).join(''):'<div class="empty"><b>📦</b>Belum ada pesanan</div>'}
+function od(i){const o=O[i],a=ST.indexOf(o.st);
+ $('#pv').innerHTML=`<div class="card"><b>${o.no}</b><div class="m">${o.tgl} · ${o.it}</div><div class="price">${rp(o.tot)}</div></div><div class="card"><h3 style="margin-bottom:12px">Status pengiriman</h3><ul class="steps">${ST.map((s,j)=>`<li class="${j<=a?'done':''}">${s}</li>`).join('')}</ul><div class="m">${o.resi?'Nomor resi: <b>'+o.resi+'</b>':'Nomor resi belum tersedia'}</div></div>`;go('pdet')}
+
+tab('l');api('load').then(r=>{if(!r.error){applyData(r);enter()}});
+</script>
+<script>
+(function(){
+let sel=null,eid=0;
+function tab(n){$('#v1').hidden=n!=1;$('#v2').hidden=n!=2;$('#t1').classList.toggle('on',n==1);$('#t2').classList.toggle('on',n==2)}
+function stats(){const b=O.filter(o=>o.st=='Dibayar').length;$('#nb').textContent=b?'('+b+')':'';
+ $('#stats').innerHTML=[['Perlu diproses',b],['Sedang dikirim',O.filter(o=>o.st=='Dikirim').length],['Stok menipis',P.filter(p=>p.s<=6).length],['Omzet bulan ini',rp(O.reduce((a,o)=>a+o.tot,0))]].map(([l,v])=>`<div class="card"><span class="m">${l}</span><b>${v}</b></div>`).join('')}
+function list(){$('#pe').hidden=P.length>0;
+ $('#pl').innerHTML=P.map(p=>`<tr><td><b>${p.n}</b></td><td>${p.t}</td><td>${rp(p.p)}</td><td>${p.s?p.s:'<span class="badge bad">Habis</span>'}${p.s&&p.s<=6?' <span class="badge">Menipis</span>':''}</td><td style="white-space:nowrap"><button class="btn ghost sm" onclick="S.edit(${p.id})">Ubah</button> <button class="btn bad sm" onclick="S.del(${p.id})">Hapus</button></td></tr>`).join('');
+ $('#oe').hidden=O.length>0;
+ $('#ol').innerHTML=O.map((o,i)=>`<tr class="sel ${sel==i?'on':''}" onclick="S.show(${i})"><td><b>${o.no}</b></td><td>${o.by}</td><td>${rp(o.tot)}</td><td><span class="badge ${o.st=='Dikirim'?'ok':''}">${o.st}</span></td></tr>`).join('');stats()}
+function edit(id){eid=id;const p=P.find(x=>x.id==id)||{n:'',t:'Arabika',p:'',s:'',d:''};
+ $('#form').innerHTML=`<h2>${id?'Ubah produk':'Tambah produk'}</h2>
+ <label class="field"><span>Nama produk</span><input id="fn" value="${p.n}"></label>
+ <label class="field"><span>Jenis kopi</span><select id="ft"><option ${p.t=='Arabika'?'selected':''}>Arabika</option><option ${p.t=='Robusta'?'selected':''}>Robusta</option></select></label>
+ <div class="row"><label class="field grow"><span>Harga (Rp)</span><input id="fp" inputmode="numeric" value="${p.p}"></label><label class="field grow"><span>Stok</span><input id="fs" inputmode="numeric" value="${p.s}"></label></div>
+ <label class="field"><span>Deskripsi</span><textarea id="fd" rows="3">${p.d}</textarea></label>
+ <label class="field"><span>Foto produk</span><input type="file" accept="image/*"></label>
+ <div class="err" id="ferr"></div><button class="btn" onclick="S.save()">Simpan</button>`}
+async function save(){const n=$('#fn').value.trim(),p=$('#fp').value.trim(),s=$('#fs').value.trim(),e=$('#ferr');
+ if(!n||!$('#fd').value.trim())return e.textContent='Data produk wajib diisi';
+ if(!/^\d+$/.test(p)||!/^\d+$/.test(s))return e.textContent='Harga atau stok tidak valid';
+ const r=await api('product_save',{id:eid,n,t:$('#ft').value,p:+p,s:+s,d:$('#fd').value});
+ if(r.error)return e.textContent=r.error;
+ await loadAll();toast('Produk berhasil disimpan');list();edit(eid)}
+async function del(id){const r=await api('product_delete',{id});if(r.error)return toast(r.error);await loadAll();list();toast('Produk dihapus')}
+function show(i){sel=i;const o=O[i],S=['Dibayar','Dikemas','Dikirim'],a=S.indexOf(o.st);
+ $('#od').innerHTML=`<h2>${o.no}</h2><div class="m">Ekspedisi ${o.eks}</div><div class="card"><span class="m">Pembeli</span><br><b>${o.by}</b> · ${o.hp||'-'}</div><div><b>${o.it}</b><div class="price">${rp(o.tot)}</div></div><div class="card"><span class="m">Alamat pengiriman</span><br>${o.adr}</div>
+ <ul class="steps">${S.map((s,j)=>`<li class="${j<=a?'done':''}">${s}</li>`).join('')}</ul>
+ ${o.st=='Dibayar'?`<button class="btn" onclick="S.step(${i})">Konfirmasi dan kemas</button>`:o.st=='Dikemas'?`<label class="field"><span>Nomor resi</span><input id="rs" placeholder="Masukkan nomor resi ${o.eks}"></label><div class="err" id="rerr"></div><button class="btn" onclick="S.step(${i})">Kirim pesanan</button>`:`<p class="m">Resi: <b>${o.resi}</b></p>`}`;list()}
+async function step(i){const o=O[i];let st='Dikemas',resi='';
+ if(o.st=='Dikemas'){resi=$('#rs').value.trim();if(!resi)return $('#rerr').textContent='Nomor resi wajib diisi';st='Dikirim'}
+ const r=await api('order_status',{id:o.id,status:st,resi});if(r.error)return toast(r.error);
+ await loadAll();toast('Status pesanan berhasil diperbarui');show(i)}
+function refresh(){$('#sn').textContent=ME.n;sel=null;$('#od').innerHTML='<p class="m">Pilih pesanan untuk melihat detail.</p>';list();edit(0);tab(1)}
+window.S={tab,edit,save,del,show,step,refresh};
+})();
+</script>
+</body></html>
